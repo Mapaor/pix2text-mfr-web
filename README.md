@@ -3,6 +3,15 @@
 Client-side Math Formula Recognition (MFR) for Pix2Text MFR-1.5, using
 [ONNX Runtime Web](https://onnxruntime.ai/docs/get-started/with-javascript.html).
 
+- GH: [Mapaor/pix2text-mfr-web](https://github.com/Mapaor/pix2text-mfr-web)
+- NPM: [pix2text-mfr-web](https://www.npmjs.com/package/pix2text-mfr-web)
+- HF: *Pending*
+- Demo: [pix2text-mfr-web.vercel.app](https://pix2text-mfr-web.vercel.app/)
+
+Based on the Pix2Text open source project:
+- Original repo: [breezedeus/Pix2Text](https://github.com/breezedeus/Pix2Text).
+- Original model: [breezedeus/pix2text-mfr](https://huggingface.co/breezedeus/pix2text-mfr)
+
 ## Install
 
 ```bash
