@@ -27,7 +27,7 @@ button {
 }
 
 button:disabled {
-  cursor: wait;
+  cursor: default;
 }
 
 .result-header {
@@ -47,6 +47,12 @@ button:disabled {
   background: white;
   border: 1px solid #dfe3eb;
   border-radius: 0.35rem;
+}
+
+#copy-result:disabled {
+  color: #9ca3af;
+  background: #f3f4f6;
+  border-color: #e5e7eb;
 }
 
 #copy-result:not(:disabled):hover {
