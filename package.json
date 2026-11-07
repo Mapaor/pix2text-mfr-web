@@ -2,6 +2,25 @@
   "name": "pix2text-mfr-web",
   "version": "0.1.0",
   "description": "Client-side Pix2Text MFR-1.5 formula recognition with ONNX Runtime Web",
+  "keywords": [
+    "ocr",
+    "math",
+    "latex",
+    "formula-recognition",
+    "onnx",
+    "onnxruntime-web",
+    "browser",
+    "webgpu"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mapaor/pix2text-mfr-web.git"
+  },
+  "homepage": "https://github.com/Mapaor/pix2text-mfr-web",
+  "bugs": {
+    "url": "https://github.com/Mapaor/pix2text-mfr-web/issues"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,6 +34,9 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "download:model": "./scripts/download-model.sh",
