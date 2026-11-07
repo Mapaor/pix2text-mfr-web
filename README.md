@@ -67,11 +67,45 @@ The demo listens on all network interfaces at port `5173`. Open
 for example `http://hp-server.cod-owl.ts.net:5173/`. Select a formula image
 and click **Recognize**. The demo serves the downloaded model and ONNX
 Runtime's WASM binaries as static files and runs recognition in the browser.
+
+The demo uses the local model at `/pix2text-mfr-1.5` when running locally. A
+deployment without the ignored `models/` directory, such as Vercel, defaults
+to the pinned Hugging Face model URL. To use your own CDN, set this Vercel
+environment variable before deploying:
+
+```text
+VITE_MFR_MODEL_BASE_URL=https://cdn.example.com/pix2text/mfr/1.5.0
+```
+
+The URL must contain the eight model files listed above and allow browser CORS
+requests. The default Hugging Face URL is:
+
+```text
+https://huggingface.co/breezedeus/pix2text-mfr-1.5/resolve/main
+```
 For a production demo build:
 
 ```bash
 npm run demo:build
 ```
+
+### Deploying the demo to Vercel
+
+This is a monorepo-style project: the demo imports the library source and
+shares the root dependencies. In Vercel, set **Root Directory** to `.`
+(the repository root), not `demo/`. Use these settings:
+
+```text
+Framework preset: Vite
+Install command: npm install
+Build command: npm run demo:build
+Output directory: demo/dist
+```
+
+The repository includes [vercel.json](./vercel.json) with these settings. If
+the Vercel project currently has `demo/` as its root, change that setting and
+redeploy. Otherwise Vercel runs `vite build` from a directory without the
+root `package.json`, producing `vite: command not found`.
 
 ## Usage
 

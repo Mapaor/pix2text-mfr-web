@@ -12,6 +12,10 @@ if (!imageInput || !recognizeButton || !status || !result) {
 }
 
 let recognizer: MfrRecognizer | undefined;
+const modelBaseUrl = import.meta.env.VITE_MFR_MODEL_BASE_URL
+  ?? (import.meta.env.DEV
+    ? "/pix2text-mfr-1.5"
+    : "https://huggingface.co/breezedeus/pix2text-mfr-1.5/resolve/main");
 
 imageInput.addEventListener("change", () => {
   recognizeButton.disabled = !imageInput.files?.length;
@@ -44,7 +48,7 @@ recognizeButton.addEventListener("click", async () => {
     if (!recognizer) {
       status.textContent = "Loading model...";
       recognizer = await MfrRecognizer.load({
-        modelBaseUrl: "/pix2text-mfr-1.5",
+        modelBaseUrl,
         wasmPaths: {
           mjs: wasmModuleUrl,
           wasm: "/ort/ort-wasm-simd-threaded.wasm",
