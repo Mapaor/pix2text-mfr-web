@@ -144,14 +144,6 @@ The local demo uses `/pix2text-mfr-1.5` (local model that needs to be manually d
 
 You can check a live version of the demo here: [pix2text-mfr-web.vercel.app](https://pix2text-mfr-web.vercel.app/).
 
-## Release (notes to myself you can ignore)
-
-```bash
-npm version patch
-npm pack --dry-run
-npm publish --access public
-```
-
 ## License
 
-MIT
+[MIT](/LICENSE)
