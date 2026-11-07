@@ -4,11 +4,12 @@ import "./style.css";
 
 const imageInput = document.querySelector<HTMLInputElement>("#formula-image");
 const recognizeButton = document.querySelector<HTMLButtonElement>("#recognize");
+const copyButton = document.querySelector<HTMLButtonElement>("#copy-result");
 const backend = document.querySelector<HTMLParagraphElement>("#backend");
 const status = document.querySelector<HTMLParagraphElement>("#status");
 const result = document.querySelector<HTMLPreElement>("#result");
 
-if (!imageInput || !recognizeButton || !backend || !status || !result) {
+if (!imageInput || !recognizeButton || !copyButton || !backend || !status || !result) {
   throw new Error("Demo markup is incomplete.");
 }
 
@@ -47,6 +48,7 @@ recognizeButton.addEventListener("click", async () => {
 
   recognizeButton.disabled = true;
   try {
+    backend.hidden = false;
     const webgpuAvailable = await backendReady;
     const executionProviders = webgpuAvailable ? ["webgpu"] : ["wasm"];
     backend.textContent = `Backend: ${webgpuAvailable ? "WebGPU" : "WASM"}`;
@@ -66,11 +68,23 @@ recognizeButton.addEventListener("click", async () => {
     status.textContent = "Recognizing...";
     const recognition = await recognizer.recognize(image);
     result.textContent = recognition.text;
+    copyButton.disabled = false;
     status.textContent = `Done (${recognition.tokenIds.length} tokens).`;
   } catch (error) {
     status.textContent = "Recognition failed.";
     result.textContent = error instanceof Error ? error.message : String(error);
   } finally {
     recognizeButton.disabled = false;
+  }
+});
+
+copyButton.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(result.textContent);
+    copyButton.classList.add("copied");
+    window.setTimeout(() => copyButton.classList.remove("copied"), 1000);
+  } catch (error) {
+    status.textContent = "Copy failed.";
+    result.textContent = error instanceof Error ? error.message : String(error);
   }
 });

@@ -30,6 +30,41 @@ button:disabled {
   cursor: wait;
 }
 
+.result-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -1rem;
+}
+
+#copy-result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: #202124;
+  background: white;
+  border: 1px solid #dfe3eb;
+  border-radius: 0.35rem;
+}
+
+#copy-result:not(:disabled):hover {
+  background: #f5f7fb;
+}
+
+#copy-result .check-icon {
+  display: none;
+}
+
+#copy-result.copied .copy-icon {
+  display: none;
+}
+
+#copy-result.copied .check-icon {
+  display: block;
+}
+
 pre {
   min-height: 5rem;
   padding: 1rem;
