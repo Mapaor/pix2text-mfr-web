@@ -1,5 +1,5 @@
 import { MfrRecognizer } from "../src/index";
-import wasmModuleUrl from "../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.mjs?url";
+import wasmModuleUrl from "../node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.mjs?url";
 import "./style.css";
 
 const imageInput = document.querySelector<HTMLInputElement>("#formula-image");
@@ -51,9 +51,9 @@ recognizeButton.addEventListener("click", async () => {
         modelBaseUrl,
         wasmPaths: {
           mjs: wasmModuleUrl,
-          wasm: "/ort/ort-wasm-simd-threaded.wasm",
+          wasm: "/ort/ort-wasm-simd-threaded.jsep.wasm",
         },
-        executionProviders: ["wasm"],
+        executionProviders: ["webgpu", "wasm"],
         cacheName: "pix2text-mfr-1.5",
       });
     }

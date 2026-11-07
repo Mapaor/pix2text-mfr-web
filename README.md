@@ -45,7 +45,8 @@ interface MfrLoadOptions {
 ```
 
 - `modelBaseUrl` is the directory containing the model assets.
-- `executionProviders` defaults to `["wasm"]`. Later on we'll implement `["wgpu"]`.
+- `executionProviders` defaults to `["webgpu", "wasm"]`, preferring WebGPU and
+  falling back to WASM.
 - `wasmPaths` optionally overrides ONNX Runtime's WASM module and binary URLs.
 - `cacheName` sets the name for the browser Cache Storage.
 
@@ -122,7 +123,9 @@ The host must serve `.onnx` files as binary responses, needs to handle CORS to a
 
 ## Notes on current state
 
-- The default execution is WASM.
+- The default execution providers are WebGPU followed by WASM fallback.
+- WebGPU is selected by ONNX Runtime Web at runtime; the ONNX model files do
+  not need a separate WebGPU conversion.
 - Images are converted to RGB, resized to 384×384, and normalized with mean
   and standard deviation `[0.5, 0.5, 0.5]` (just like pix2text does).
 - Currently no confidence scores or post-processing are implemented.
@@ -141,18 +144,13 @@ The local demo uses `/pix2text-mfr-1.5` (local model that needs to be manually d
 
 You can check a live version of the demo here: [pix2text-mfr-web.vercel.app](https://pix2text-mfr-web.vercel.app/).
 
-## Release
-
-Update the version, review the package contents, and publish:
+## Release (notes to myself you can ignore)
 
 ```bash
 npm version patch
 npm pack --dry-run
 npm publish --access public
 ```
-
-The `prepack` script builds `dist/` automatically before packing or
-publishing.
 
 ## License
 

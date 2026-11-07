@@ -1,4 +1,4 @@
-import * as ort from "onnxruntime-web/wasm";
+import * as ort from "onnxruntime-web";
 import { AutoTokenizer, env, RawImage } from "@huggingface/transformers";
 
 export interface MfrLoadOptions {
@@ -55,7 +55,7 @@ export class MfrRecognizer {
   static async load(options: MfrLoadOptions): Promise<MfrRecognizer> {
     if (options.wasmPaths) ort.env.wasm.wasmPaths = options.wasmPaths;
     env.useBrowserCache = true;
-    const providers = options.executionProviders ?? ["wasm"];
+    const providers = options.executionProviders ?? ["webgpu", "wasm"];
     const base = options.modelBaseUrl;
     const cacheName = options.cacheName ?? DEFAULT_CACHE_NAME;
     const normalizedBase = base.replace(/\/+$/, "");
