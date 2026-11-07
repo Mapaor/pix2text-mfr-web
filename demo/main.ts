@@ -5,20 +5,44 @@ import "./style.css";
 const imageInput = document.querySelector<HTMLInputElement>("#formula-image");
 const recognizeButton = document.querySelector<HTMLButtonElement>("#recognize");
 const copyButton = document.querySelector<HTMLButtonElement>("#copy-result");
+const webgpuButton = document.querySelector<HTMLButtonElement>("#webgpu");
+const wasmButton = document.querySelector<HTMLButtonElement>("#wasm");
 const backend = document.querySelector<HTMLParagraphElement>("#backend");
 const status = document.querySelector<HTMLParagraphElement>("#status");
 const result = document.querySelector<HTMLPreElement>("#result");
 
-if (!imageInput || !recognizeButton || !copyButton || !backend || !status || !result) {
+if (!imageInput || !recognizeButton || !copyButton || !webgpuButton || !wasmButton || !backend || !status || !result) {
   throw new Error("Demo markup is incomplete.");
 }
 
 let recognizer: MfrRecognizer | undefined;
+let selectedBackend: "webgpu" | "wasm" = "wasm";
+let backendWasSelected = false;
 const modelBaseUrl = import.meta.env.VITE_MFR_MODEL_BASE_URL
   ?? (import.meta.env.DEV
     ? "/pix2text-mfr-1.5"
     : "https://huggingface.co/breezedeus/pix2text-mfr-1.5/resolve/main");
 const backendReady = navigator.gpu?.requestAdapter().then((adapter) => Boolean(adapter)) ?? Promise.resolve(false);
+backendReady.then((available) => {
+  webgpuButton.disabled = !available;
+  if (available && !backendWasSelected) selectBackend("webgpu");
+});
+
+function selectBackend(backendName: "webgpu" | "wasm"): void {
+  selectedBackend = backendName;
+  webgpuButton.classList.toggle("selected", backendName === "webgpu");
+  wasmButton.classList.toggle("selected", backendName === "wasm");
+  recognizer = undefined;
+}
+
+webgpuButton.addEventListener("click", () => {
+  backendWasSelected = true;
+  selectBackend("webgpu");
+});
+wasmButton.addEventListener("click", () => {
+  backendWasSelected = true;
+  selectBackend("wasm");
+});
 
 imageInput.addEventListener("change", () => {
   recognizeButton.disabled = !imageInput.files?.length;
@@ -49,9 +73,11 @@ recognizeButton.addEventListener("click", async () => {
   recognizeButton.disabled = true;
   try {
     backend.hidden = false;
-    const webgpuAvailable = await backendReady;
-    const executionProviders = webgpuAvailable ? ["webgpu"] : ["wasm"];
-    backend.textContent = `Backend: ${webgpuAvailable ? "WebGPU" : "WASM"}`;
+    if (selectedBackend === "webgpu" && !(await backendReady)) {
+      throw new Error("WebGPU is not available in this browser.");
+    }
+    const executionProviders = [selectedBackend];
+    backend.textContent = `Backend: ${selectedBackend === "webgpu" ? "WebGPU" : "WASM"}`;
     if (!recognizer) {
       status.textContent = "Loading model...";
       recognizer = await MfrRecognizer.load({
@@ -66,10 +92,12 @@ recognizeButton.addEventListener("click", async () => {
     }
 
     status.textContent = "Recognizing...";
+    const startedAt = performance.now();
     const recognition = await recognizer.recognize(image);
+    const elapsedSeconds = ((performance.now() - startedAt) / 1000).toFixed(2);
     result.textContent = recognition.text;
     copyButton.disabled = false;
-    status.textContent = `Done (${recognition.tokenIds.length} tokens).`;
+    status.textContent = `Done (${recognition.tokenIds.length} tokens, ${elapsedSeconds}s).`;
   } catch (error) {
     status.textContent = "Recognition failed.";
     result.textContent = error instanceof Error ? error.message : String(error);

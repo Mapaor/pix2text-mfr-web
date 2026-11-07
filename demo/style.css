@@ -30,6 +30,31 @@ button:disabled {
   cursor: default;
 }
 
+#backend-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+#backend-selector button {
+  padding: 0;
+  line-height: inherit;
+  color: #202124;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+}
+
+#backend-selector button.selected {
+  border-bottom-color: currentColor;
+}
+
+#backend-selector button:disabled {
+  color: #9ca3af;
+}
+
 .result-header {
   display: flex;
   justify-content: flex-end;

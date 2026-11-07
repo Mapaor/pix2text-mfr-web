@@ -14,6 +14,11 @@
         <input id="formula-image" type="file" accept="image/*" />
       </label>
       <button id="recognize" type="button" disabled>Recognize</button>
+      <div id="backend-selector" role="group" aria-label="Backend">
+        <span>Backend:</span>
+        <button id="webgpu" type="button">WebGPU</button>
+        <button id="wasm" type="button">WASM</button>
+      </div>
       <p id="backend" hidden></p>
       <p id="status" role="status">Choose an image to begin.</p>
       <div class="result-header">
