@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pix2Text MFR Web Demo</title>
+  </head>
+  <body>
+    <main>
+      <h1>Pix2Text MFR-1.5</h1>
+      <p>Recognize a formula locally in your browser. Select or paste an image.</p>
+      <label>
+        Formula image
+        <input id="formula-image" type="file" accept="image/*" />
+      </label>
+      <button id="recognize" type="button" disabled>Recognize</button>
+      <p id="status" role="status">Choose an image to begin.</p>
+      <pre id="result"></pre>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

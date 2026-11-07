@@ -1,0 +1,40 @@
+:root {
+  color: #202124;
+  font: 16px/1.5 system-ui, sans-serif;
+  background: #f5f7fb;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  box-sizing: border-box;
+  display: grid;
+  gap: 1rem;
+  max-width: 46rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: white;
+  border: 1px solid #dfe3eb;
+  border-radius: 0.75rem;
+}
+
+button {
+  width: fit-content;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+}
+
+pre {
+  min-height: 5rem;
+  padding: 1rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  background: #f5f7fb;
+  border-radius: 0.5rem;
+}
