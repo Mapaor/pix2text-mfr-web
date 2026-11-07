@@ -1,6 +1,6 @@
 {
   "name": "pix2text-mfr-web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Client-side Pix2Text MFR-1.5 formula recognition with ONNX Runtime Web",
   "keywords": [
     "ocr",
