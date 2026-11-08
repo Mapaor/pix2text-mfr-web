@@ -21,6 +21,10 @@ const DEFAULT_MAX_NEW_TOKENS = 1024;
 const BOS_TOKEN_ID = 1;
 const EOS_TOKEN_ID = 2;
 const DEFAULT_CACHE_NAME = "pix2text-mfr-web";
+const DEFAULT_WASM_PATHS = {
+  mjs: new URL("./assets/ort-wasm-simd-threaded.jsep.mjs", import.meta.url).href,
+  wasm: new URL("./assets/ort-wasm-simd-threaded.jsep.wasm", import.meta.url).href,
+};
 
 function url(base: string, file: string): string {
   return `${base.replace(/\/+$/, "")}/${file}`;
@@ -53,7 +57,7 @@ export class MfrRecognizer {
   ) {}
 
   static async load(options: MfrLoadOptions): Promise<MfrRecognizer> {
-    if (options.wasmPaths) ort.env.wasm.wasmPaths = options.wasmPaths;
+    ort.env.wasm.wasmPaths = options.wasmPaths ?? DEFAULT_WASM_PATHS;
     env.useBrowserCache = true;
     const providers = options.executionProviders ?? ["webgpu", "wasm"];
     const base = options.modelBaseUrl;

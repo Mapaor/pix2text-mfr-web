@@ -57,6 +57,11 @@ interface MfrLoadOptions {
 - `executionProviders` defaults to `["webgpu", "wasm"]`, preferring WebGPU and
   falling back to WASM.
 - `wasmPaths` optionally overrides ONNX Runtime's WASM module and binary URLs.
+  By default, the package points ONNX Runtime at the WASM assets shipped in
+  `dist/assets`, so browser consumers do not need to configure these paths.
+  Provide an override when your bundler rewrites package-relative URLs, your
+  deployment relocates package assets, or you need to serve them from a custom
+  CDN. Bundler handling of `new URL(..., import.meta.url)` varies by setup.
 - `cacheName` sets the name for the browser Cache Storage.
 
 The model directory must contain:
@@ -133,6 +138,12 @@ The host must serve `.onnx` files as binary responses, needs to handle CORS to a
 ## Notes on current state
 
 - The default execution providers are WebGPU followed by WASM fallback.
+- The package includes the ONNX Runtime SIMD JSEP WASM assets. In the installed
+  ONNX Runtime version these assets use threads, which can require cross-origin
+  isolation (`COOP`/`COEP`) in the browser. Configure `wasmPaths` for a compatible
+  alternative build when your deployment cannot provide that isolation.
+- This package targets browsers through `onnxruntime-web`; plain Node.js is not
+  a supported runtime target. Node applications should use `onnxruntime-node`.
 - WebGPU is selected by ONNX Runtime Web at runtime; the ONNX model files do
   not need a separate WebGPU conversion.
 - Images are converted to RGB, resized to 384×384, and normalized with mean
